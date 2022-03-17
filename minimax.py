@@ -50,7 +50,7 @@ def calculate_score(grid, player, opponent, players_chance, default_value):
                 grid[i][j] = default_value
     return best_score
 
-def best_move(grid, player, opponent, players_chance, default_value):
+def best_move(grid, player, opponent, players_chance, default_value, all_best_moves = False):
     best_score, best_moves = -math.inf if players_chance else math.inf, []
     for i in range(3):
         for j in range(3):
@@ -71,7 +71,10 @@ def best_move(grid, player, opponent, players_chance, default_value):
                         best_moves.append([i,j]) 
                 grid[i][j] = default_value
     # print(best_moves)
-    return choice(best_moves)
+    if all_best_moves:
+        return best_moves
+    else:
+        return choice(best_moves)
 
 grid = init_grid()
 # print(best_move(grid, 1, 2, True, 0))
