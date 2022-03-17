@@ -60,15 +60,15 @@ def best_move(grid, player, opponent, players_chance, default_value, all_best_mo
                 if players_chance:
                     if score>best_score:
                         best_score = score
-                        best_moves =[[i,j]]
+                        best_moves =[(i,j)]
                     elif score==best_score:
-                        best_moves.append([i,j])
+                        best_moves.append((i,j))
                 else:
                     if score<best_score:
                         best_score = score
-                        best_moves =[[i,j]]
+                        best_moves =[(i,j)]
                     elif score==best_score:
-                        best_moves.append([i,j]) 
+                        best_moves.append((i,j)) 
                 grid[i][j] = default_value
     # print(best_moves)
     if all_best_moves:
@@ -76,7 +76,7 @@ def best_move(grid, player, opponent, players_chance, default_value, all_best_mo
     else:
         return choice(best_moves)
 
-grid = init_grid()
-# print(best_move(grid, 1, 2, True, 0))
+# grid = init_grid()
+# print(best_move(grid, 1, 2, True, 0, True))
 
 
