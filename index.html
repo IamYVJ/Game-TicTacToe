@@ -8,41 +8,25 @@
 </head>
 <body>
   <main class="card">
-    <h1>Tic&#8209;Tac&#8209;Toe</h1>
+    <header class="app-header">
+      <h1>Tic&#8209;Tac&#8209;Toe</h1>
+      <p class="subtitle">Unbeatable minimax AI &middot; live win-odds overlay</p>
+    </header>
 
-    <div class="controls">
-      <label class="field">
-        <span>Mode</span>
-        <select id="mode">
-          <option value="ai">vs Computer (unbeatable)</option>
-          <option value="pvp">2 Players</option>
-        </select>
-      </label>
-
-      <label class="field" id="starts-field">
-        <span>Who starts</span>
-        <select id="starts">
-          <option value="human">You (X)</option>
-          <option value="ai">Computer (X)</option>
-        </select>
-      </label>
-
-      <label class="toggle">
-        <input type="checkbox" id="odds-toggle" />
-        <span class="track"><span class="thumb"></span></span>
-        <span class="toggle-label">Show win odds</span>
-      </label>
-    </div>
-
-    <div id="odds-options" class="odds-options hidden">
-      <label class="field">
-        <span>Odds assume</span>
-        <select id="odds-model">
-          <option value="random">Both play randomly</option>
-          <option value="optimal">Opponent plays optimally</option>
-        </select>
-      </label>
-    </div>
+    <section class="scoreboard">
+      <div class="stat stat-x">
+        <span class="stat-top" id="label-x">You (X)</span>
+        <span class="stat-num" id="count-x">0</span>
+      </div>
+      <div class="stat stat-draw">
+        <span class="stat-top">Draws</span>
+        <span class="stat-num" id="count-draw">0</span>
+      </div>
+      <div class="stat stat-o">
+        <span class="stat-top" id="label-o">Computer (O)</span>
+        <span class="stat-num" id="count-o">0</span>
+      </div>
+    </section>
 
     <p id="status" class="status">Your turn</p>
 
@@ -50,11 +34,57 @@
       <!-- 9 cells injected by script.js -->
     </div>
 
+    <section class="panel">
+      <div class="controls">
+        <label class="field">
+          <span>Mode</span>
+          <div class="select-wrap">
+            <select id="mode">
+              <option value="ai">vs Computer (unbeatable)</option>
+              <option value="pvp">2 Players</option>
+            </select>
+          </div>
+        </label>
+
+        <label class="field" id="starts-field">
+          <span>Who starts</span>
+          <div class="select-wrap">
+            <select id="starts">
+              <option value="human">You (X)</option>
+              <option value="ai">Computer (X)</option>
+            </select>
+          </div>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="odds-toggle" />
+          <span class="track"><span class="thumb"></span></span>
+          <span class="toggle-label">Win odds</span>
+        </label>
+      </div>
+
+      <div id="odds-options" class="odds-options hidden">
+        <label class="field">
+          <span>Odds assume</span>
+          <div class="select-wrap">
+            <select id="odds-model">
+              <option value="random">Both play randomly</option>
+              <option value="optimal">Opponent plays optimally</option>
+            </select>
+          </div>
+        </label>
+        <div class="odds-legend">
+          <span><i class="dot win"></i>Win</span>
+          <span><i class="dot draw"></i>Draw</span>
+          <span><i class="dot loss"></i>Loss</span>
+        </div>
+      </div>
+    </section>
+
     <div class="footer">
       <button id="reset" class="btn">New Game</button>
       <p id="odds-help" class="help hidden">
-        Each empty square shows your chance to win if you play there,
-        assuming both players move at random afterward.
+        Each empty square shows your chance to win if you play there.
       </p>
     </div>
   </main>

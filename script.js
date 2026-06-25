@@ -150,9 +150,15 @@ const els = {
   oddsModel: document.getElementById("odds-model"),
   oddsHelp: document.getElementById("odds-help"),
   reset: document.getElementById("reset"),
+  labelX: document.getElementById("label-x"),
+  labelO: document.getElementById("label-o"),
+  countX: document.getElementById("count-x"),
+  countO: document.getElementById("count-o"),
+  countDraw: document.getElementById("count-draw"),
 };
 
-let board, current, gameOver, locked;
+let board, current, gameOver, locked, lastMove;
+let scores = { x: 0, o: 0, draw: 0 };
 
 function symbol(v) {
   return v === X ? "X" : v === O ? "O" : "";
@@ -162,6 +168,7 @@ function init() {
   board = new Array(9).fill(EMPTY);
   gameOver = false;
   locked = false;
+  lastMove = -1;
 
   const mode = els.mode.value;
   els.startsField.classList.toggle("hidden", mode !== "ai");
@@ -199,7 +206,11 @@ function render() {
 
     if (v !== EMPTY) {
       cell.classList.add("taken", v === X ? "x" : "o");
-      cell.textContent = symbol(v);
+      const mark = document.createElement("span");
+      mark.className = "mark";
+      if (i === lastMove) mark.classList.add("pop");
+      mark.textContent = symbol(v);
+      cell.appendChild(mark);
     } else if (gameOver || locked) {
       cell.classList.add("disabled");
     }
@@ -233,6 +244,7 @@ function render() {
     cell.addEventListener("click", () => onCellClick(i));
     els.board.appendChild(cell);
   }
+  lastMove = -1;
 }
 
 // expected value -1 -> red, 0 -> yellow, +1 -> green
@@ -245,6 +257,7 @@ function onCellClick(i) {
   if (gameOver || locked || board[i] !== EMPTY) return;
 
   board[i] = current;
+  lastMove = i;
   if (checkEnd()) return;
 
   current = other(current);
@@ -263,6 +276,7 @@ function aiMove() {
   if (gameOver) return;
   const move = bestMove(board, current);
   board[move] = current;
+  lastMove = move;
   if (checkEnd()) return;
   current = other(current);
   locked = false;
@@ -276,6 +290,8 @@ function checkEnd() {
   if (w !== EMPTY) {
     gameOver = true;
     locked = false;
+    scores[w === X ? "x" : "o"]++;
+    renderScores();
     showResult(w);
     render();
     return true;
@@ -283,12 +299,38 @@ function checkEnd() {
   if (isFull(board)) {
     gameOver = true;
     locked = false;
+    scores.draw++;
+    renderScores();
     els.status.textContent = "It's a draw.";
     els.status.className = "status draw";
     render();
     return true;
   }
   return false;
+}
+
+function renderScores() {
+  els.countX.textContent = scores.x;
+  els.countO.textContent = scores.o;
+  els.countDraw.textContent = scores.draw;
+}
+
+function resetScores() {
+  scores = { x: 0, o: 0, draw: 0 };
+  renderScores();
+}
+
+function updateScoreLabels() {
+  if (els.mode.value === "pvp") {
+    els.labelX.textContent = "Player X";
+    els.labelO.textContent = "Player O";
+  } else if (humanIsX()) {
+    els.labelX.textContent = "You (X)";
+    els.labelO.textContent = "Computer (O)";
+  } else {
+    els.labelX.textContent = "Computer (X)";
+    els.labelO.textContent = "You (O)";
+  }
 }
 
 function showResult(winner) {
@@ -325,8 +367,15 @@ function updateOddsHelp() {
       : "Each empty square shows what happens if you play there and both players move at random afterward.") + tail;
 }
 
-els.mode.addEventListener("change", init);
-els.starts.addEventListener("change", init);
+// Changing settings starts a fresh matchup; New Game keeps the running score.
+function changeSettings() {
+  updateScoreLabels();
+  resetScores();
+  init();
+}
+
+els.mode.addEventListener("change", changeSettings);
+els.starts.addEventListener("change", changeSettings);
 els.reset.addEventListener("click", init);
 els.oddsToggle.addEventListener("change", () => {
   const on = els.oddsToggle.checked;
@@ -339,5 +388,7 @@ els.oddsModel.addEventListener("change", () => {
   render();
 });
 
+updateScoreLabels();
+renderScores();
 updateOddsHelp();
 init();
