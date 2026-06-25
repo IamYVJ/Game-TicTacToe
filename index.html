@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>Tic&#8209;Tac&#8209;Toe</h1>
+
+    <div class="controls">
+      <label class="field">
+        <span>Mode</span>
+        <select id="mode">
+          <option value="ai">vs Computer (unbeatable)</option>
+          <option value="pvp">2 Players</option>
+        </select>
+      </label>
+
+      <label class="field" id="starts-field">
+        <span>Who starts</span>
+        <select id="starts">
+          <option value="human">You (X)</option>
+          <option value="ai">Computer (X)</option>
+        </select>
+      </label>
+
+      <label class="toggle">
+        <input type="checkbox" id="odds-toggle" />
+        <span class="track"><span class="thumb"></span></span>
+        <span class="toggle-label">Show win odds</span>
+      </label>
+    </div>
+
+    <div id="odds-options" class="odds-options hidden">
+      <label class="field">
+        <span>Odds assume</span>
+        <select id="odds-model">
+          <option value="random">Both play randomly</option>
+          <option value="optimal">Opponent plays optimally</option>
+        </select>
+      </label>
+    </div>
+
+    <p id="status" class="status">Your turn</p>
+
+    <div id="board" class="board" aria-label="Tic-tac-toe board">
+      <!-- 9 cells injected by script.js -->
+    </div>
+
+    <div class="footer">
+      <button id="reset" class="btn">New Game</button>
+      <p id="odds-help" class="help hidden">
+        Each empty square shows your chance to win if you play there,
+        assuming both players move at random afterward.
+      </p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
