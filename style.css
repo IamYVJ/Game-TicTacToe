@@ -20,6 +20,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,6 +31,8 @@ body {
     radial-gradient(900px 500px at 100% 110%, rgba(129, 140, 248, 0.12), transparent 60%),
     var(--bg);
   color: var(--text);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .card {
@@ -51,7 +54,7 @@ body {
 .app-header { text-align: center; margin-bottom: 18px; }
 h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: clamp(1.6rem, 6vw, 2rem);
   font-weight: 800;
   letter-spacing: 0.5px;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -138,18 +141,25 @@ h1 {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  touch-action: manipulation;
   transition: transform 0.1s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
-.cell:hover:not(.taken):not(.disabled) {
-  transform: translateY(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .cell:hover:not(.taken):not(.disabled) {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+  }
+}
+.cell:active:not(.taken):not(.disabled) {
+  transform: scale(0.96);
   border-color: var(--accent);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
 }
 .cell.taken,
 .cell.disabled { cursor: default; }
 
 .mark {
-  font-size: 3rem;
+  font-size: clamp(2.1rem, 11vw, 3rem);
   font-weight: 800;
   line-height: 1;
   display: inline-block;
@@ -290,6 +300,7 @@ h1 {
 
 .odds-options {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 14px;
@@ -340,9 +351,26 @@ h1 {
 .hidden { display: none; }
 
 @media (max-width: 480px) {
-  .card { padding: 20px 16px 16px; border-radius: 18px; }
-  h1 { font-size: 1.7rem; }
+  body { padding: 12px; align-items: flex-start; }
+  .card { padding: 18px 14px 16px; border-radius: 18px; }
+  .subtitle { font-size: 0.76rem; }
+  .scoreboard { gap: 8px; margin-bottom: 14px; }
+  .stat { padding: 8px 6px; border-radius: 12px; }
+  .stat-num { font-size: 1.3rem; }
+  .status { font-size: 1rem; }
+  .board { gap: 8px; }
+  .cell { border-radius: 14px; }
   .controls { gap: 10px; }
   .field { flex: 1 1 130px; }
-  .toggle { margin-left: 0; }
+  .field select { padding: 11px 32px 11px 12px; }
+  .toggle { margin-left: 0; flex-basis: 100%; padding-bottom: 0; }
+  .odds-options { gap: 10px; }
+  .odds-options .field { flex-basis: 100%; }
+}
+
+@media (max-width: 360px) {
+  .board { gap: 6px; }
+  .stat-top { font-size: 0.66rem; }
+  .odds { font-size: 0.7rem; top: 5px; right: 6px; }
+  .odds-bar { left: 6px; right: 6px; bottom: 6px; }
 }
